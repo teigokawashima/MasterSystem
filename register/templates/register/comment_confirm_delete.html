@@ -1,0 +1,19 @@
+{% extends 'register/base.html' %}
+{% block content %}
+<form action=""method="POST">
+    {% csrf_token %}
+    <table class="table">
+        <tr>
+            <th>コメントタイトル</th>
+            <td>{{comment.title}}</td>
+        </tr>
+        <tr>
+            <th>コメント内容</th>
+            <td>{{comment.text}}</td>
+        </tr>
+    </table>
+    <p>このコメントまたは質問を削除しますが、よろしいですか。</p>
+    <button type="submit" class="btn btn-danger">はい</button>
+    {% csrf_token %}
+</form>
+{% endblock %}

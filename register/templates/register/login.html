@@ -1,0 +1,28 @@
+{% extends "register/base.html" %}
+{% block content %}
+    <!-- 左側、ログインエリア -->
+    <div class="card border-0 shadow-sm col-lg-6 col-md-6">
+        <h6 class = "text-muted　　">※こちらからログインしてください。</h6>
+        <div class="card-body">
+            <form action="{% url 'register:login' %}" method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field }}
+                    {{ field.errors }}
+                    <hr>
+                {% endfor %}
+                <button type="submit" class="btn btn-dark btn-lg btn-block" >ログイン</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+            </form>
+        </div>
+    </div><!-- 左側、ログインエリアおわり -->
+
+    <!-- 右側、会員登録エリア -->
+        <div class="card-body shadow-sm">
+            <a href="{% url 'register:user_create' %}" class="btn btn-dark btn-lg btn-block" >会員登録</a><hr>
+            <a href="{% url 'register:password_reset' %}" class="btn btn-dark btn-lg btn-block" >パスワードを忘れた方</a>
+        </div>
+    <!-- 右側、会員登録エリアおわり -->
+{% endblock %}

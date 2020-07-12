@@ -1,0 +1,118 @@
+{% extends 'register/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container container-center p-0 m-0 ">
+    <div class="card-group m-0 p-0 ">
+        <div class = "card p-0 m-0">
+            <div class = "card-body p-0 m-0">
+<!--        <div class="jumbotron   m-0 p-0  rounded bg-dark col-lg-8">-->
+            <div class=" embed-responsive embed-responsive-16by9 p-0 m-0">
+                <video controls class="embed-responsive-item" autoplay src="{{ video.upload.url }}"></video>
+            </div>
+        <style>
+            .embed-responsive{
+            width: auto;
+            height auto;
+
+            }
+
+        </style>
+        </div>
+        </div>
+
+        <div class="card m-1 border-0">
+            <div class="card-body  rounded ">
+                <h3 class=" font-weight-bold text-left"><img class="img-thumbnail border-0" src="{% static 'register/kamereon.png' %}" alt="Thumbnail image">{{ video.title }}</h3>
+                 <style>
+                     .img-thumbnail{
+                        width: 90px;
+                        height: 45px;
+                     }
+
+                 </style>
+
+                <p class="text-muted p-0 m-0 text-center ">
+                    <font size="2">{{ video.count }}回視聴　・　投稿日: {{ video.created_at }}</font></p>
+                <hr width="100%">
+                <p class="float-left"><font size="4">【概説】　{{ video.description }}</font></p><br>
+            </div>
+        </div>
+    </div>
+</div>
+<hr width="100% p-0 m-0">
+<p class = "my-1 mx-5 p-0 text-monospace text-muted ">
+    <font size = "5">＜　§　<font class = "text-white font-weight-bold bg-dark">{{ video.comment_count }}</font>　件のコメント　＞</font></p>
+<a class="font-weight-light pb-2" href="{% url 'register:comment' video.pk %}">
+
+    <button type="button" class="btn btn-outline-primary my-0  mx-5">
+        <font size="4">【コメントや質問はここから】</font><font size="2"><br>※写真や動画を投稿してコメントすることもできます。</font></button></a>
+    {% for comment in video.comment_set.all %}
+<div class='container py-4 shadow-lg'>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title font-weight-bold">★{{ comment.title }}</h5>
+            <hr width="100%">
+            <p class="card-text text-monospace"><font size="3">{{ comment.text |linebreaksbr }}</font></p>
+
+            <hr width="100%">
+
+                                        <style>
+
+                                        .img-fluid{
+                                        width:256px ;
+                                        height: 144px;
+                                                               }
+                                        </style>
+            {% if comment.reply_image1 %}
+            <a href="{{comment.reply_image1.url }}" target=_blank>
+                <img class="img-fluid mt-2 mb-0 mr-0 ml-0 " src="{{comment.reply_image1.url }}"
+                     alt="{{ comment.title }}"></a>
+            {% endif %}
+            {% if comment.reply_image2 %}
+            <a href="{{comment.reply_image2.url }}" target=_blank>
+                <img class="img-fluid mt-2 mb-0 mr-0 ml-0" src="{{comment.reply_image2.url }}"
+                     alt="{{ comment.title }}"></a>
+            {% endif %}
+            {% if comment.reply_image3 %}
+            <a href="{{comment.reply_image3.url }}" target=_blank>
+                <img class="img-fluid mt-2 mb-0 mr-0 ml-0" src="{{comment.reply_image3.url }}"
+                     alt="{{ comment.title }}"></a>
+            {% endif %}
+
+
+            {% if comment.reply_video %}
+            <style>
+                            .container-fluid{
+                                width: 256px;
+                                height: 144px;
+                            }
+
+
+
+            </style>
+            <div class="card-body pt-3 pb-3 pl-0 pr-0 ">
+                <div class="container-fluid p-0 m-0  ">
+                    <div class=" embed-responsive  embed-responsive-16by9 ">
+                        <video controls class="embed-responsive-item" src="{{ comment.reply_video.url }}"></video>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            <p class="text-muted"><font size="2">＜投稿者＞{{ request.user }} ＜投稿日時＞{{ comment.created_at }}
+            {% if comment.lecturer.lecture_name %}＜質問先講師＞{{ comment.lecturer.lecture_name }}
+            </font></p>
+            {% endif %}
+            <button class = "btn-primary btn-sm float-right border">
+            <a class="font-weight-bold text-white float-right p-0" href="{% url 'register:comment' video.pk %}">
+                <font size="3">返信</font></a></button>
+            <button class = "btn-danger btn-sm float-right mr-2 border">
+            <a class="font-weight-bold text-white float-right p-0" href="{% url 'register:comment_delete' comment.pk %}">
+                <font size="3">削除</font></a></button>
+
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

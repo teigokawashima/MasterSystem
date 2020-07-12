@@ -1,0 +1,64 @@
+{% extends 'register/base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light">
+
+    <img src="{% static 'register/kamereon.png' %}" class="img-fluid" alt="管理者用検索バー">
+    <p><font size = "4">・・・『ここは、<font class = "font-weight-bold text-success">管理者用のページです。</font>
+        登録されているすべての動画が並べられています。管理者用検索窓では<font class = "bg-warning">ユーザーアドレス</font>、
+        <font class = "bg-warning">動画タイトル</font>、<font class = "bg-warning">
+            動画概説</font>が検索対象となります。例えば、ユーザーアドレスで検索したい場合は検索したいアドレスを記入して検索してください。（記入するアドレスは部分的でも大丈夫です。）』
+    </font><font class = "bg-danger font-weight-bold">※科目カテゴリーは管理者ページでは機能しません。管理者用検索窓で動画を絞り込んでください。</font></p>
+<form class="form-inline my-2 my-lg-0 " method="GET" action="{% url 'register:all_videos' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" placeholder="管理者用検索窓" aria-label="Search"
+                   name="master_keyword">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">MasterSerach</button>
+</form>
+</nav>
+<hr class = "p-0 m-2 " width="100%">
+
+{% for video in all_video_list %}
+<div class="card shadow-sm border-0 col-lg-3 col-6 col-md-6 col-sm-6 p-0 ">
+        <a href="{% url 'register:play' video.pk %}">
+
+            {% if video.thumbnail %}
+            <style>
+                        .img-thumbnail{
+                            max-width: auto;
+                            height: 144px;
+                        }
+            </style>
+            <img class="img-thumbnail card-img-top  " src="{{ video.thumbnail.url }}"
+                 alt="{{ video.title }}">
+            {% else %}
+
+            <img class="img-thumbnail card-img-top border-0" src="{% static 'register/noimage.jpg' %}"
+                 alt="{{ video.title }}">
+            {% endif %}
+        </a>
+<!--        </div>-->
+<!--    </div>-->
+    <div class="card-body">
+        <h5 class="text-left  font-weight-bold"><a href=" {% url 'register:play' video.pk %}">{{ video.title }}</a></h5>
+        <h6 class="text-left text-muted ">科目：{{ video.subject }}</h6>
+        <!--                <h6 class="text-left font-weight-bold "><small>説明：{{ video.description }}</small></h6>-->
+        <h6 class="text-left text-muted "> {{ video.created_at }}</h6>
+        {% if user.is_superuser %}
+        <h6 class="font-weight-bold">
+            <button type="button" class="btn btn-outline-info">
+                <a href="{% url 'register:delete' video.pk %}">削除</a></button>
+        </h6>
+        {% endif %}
+        <h6 class="text-left text-muted ">{{video.count}}回視聴 ・　{{ video.comment_count }}件のコメント</h6>
+        <h6 class="text-left text-muted "><font size = "2">＜アップロード先アカウント＞：<br>{{video.user}}</font></h6>
+
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endblock %}

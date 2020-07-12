@@ -1,0 +1,35 @@
+<!--{% extends "register/base.html" %}-->
+<!--{% block content %}-->
+<!--{% load static %}-->
+<!--    <div class="row">-->
+<!--      {% for video in video_list %}-->
+<!--        <div class="col-md-2 col-sm-2 ">-->
+<!--          <a href="{% url 'register:play' video.pk %}">-->
+
+<!--            {% if video.thumbnail %}-->
+<!--            <style>-->
+<!--                .img-thumbnail{-->
+<!--                  width: 224px;-->
+<!--                  height: 126px;-->
+<!--                }-->
+<!--            </style>-->
+<!--              <img class="img-thumbnail " src="{{ video.thumbnail.url }}"-->
+<!--                   alt="{{ video.title }}">-->
+<!--            {% else %}-->
+
+<!--              <img class="img-thumbnail" src="{% static 'videos/noimage.jpg' %}"-->
+<!--                   alt="{{ video.title }}"  >-->
+<!--            {% endif %}-->
+<!--          </a>-->
+<!--          <h5 class="text-center font-weight-bold">{{ video.title }}</h5>-->
+<!--          <h6 class="text-left"><small>科目：{{ video.subject }}</small></h6>-->
+<!--          <h6 class="text-left"><small>説明：{{ video.description }}</small></h6>-->
+<!--          <h6 class="text-left"><small> {{ video.created_at }} </small></h6>-->
+<!--            {% if user.is_superuser %}-->
+<!--          <h6><small><a href = "{% url 'register:delete' video.pk %}">削除</a></small></h6>-->
+<!--            {% endif %}-->
+<!--          <h6 class="text-left"><small>{{video.count}}回視聴</small></h6>-->
+<!--        </div>-->
+<!--      {% endfor %}-->
+<!--    </div>-->
+<!--{% endblock %}-->

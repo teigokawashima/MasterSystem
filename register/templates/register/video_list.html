@@ -1,0 +1,54 @@
+{% extends 'register/base.html' %}
+{% load static %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+    {% if user.is_superuser %}
+    <p class = "text-center"><font size="3">※管理者用のページは<font class = "text-white bg-dark">【全ての動画】</font>から移動できます。</font></p>
+    <hr  width="100%">
+    {% endif %}
+{% for video in object_list %}
+
+<div class="card shadow-sm border-0 col-lg-3 col-6 col-md-6 col-sm-6 p-0 my-3">
+<!--    <div class="card border-0">-->
+<!--        <div class = "card-body">-->
+        <!--{% if request.user.id == video.user.id %}-->
+        <a href="{% url 'register:play' video.pk %}">
+
+            {% if video.thumbnail %}
+            <style>
+                        .img-thumbnail{
+                            max-width: auto;
+                            height: 180px;
+                        }
+            </style>
+            <img class="img-thumbnail card-img-top  " src="{{ video.thumbnail.url }}"
+                 alt="{{ video.title }}">
+            {% else %}
+
+            <img class="img-thumbnail card-img-top border-0" src="{% static 'register/noimage.jpg' %}"
+                 alt="{{ video.title }}">
+            {% endif %}
+        </a>
+<!--        </div>-->
+<!--    </div>-->
+    <div class="card-body">
+        <h5 class="text-left  font-weight-bold"><a href=" {% url 'register:play' video.pk %}">{{ video.title }}</a></h5>
+        <h6 class="text-left text-muted ">科目：{{ video.subject }}</h6>
+        <!--                <h6 class="text-left font-weight-bold "><small>説明：{{ video.description }}</small></h6>-->
+        <h6 class="text-left text-muted "> {{ video.created_at }}</h6>
+        {% if user.is_superuser %}
+        <h6 class="font-weight-bold">
+            <button type="button" class="btn btn-outline-info">
+                <a href="{% url 'register:delete' video.pk %}">削除</a></button>
+        </h6>
+        {% endif %}
+        <h6 class="text-left text-muted ">{{video.count}}回視聴 ・　{{ video.comment_count }}件のコメント</h6>
+    </div>
+</div>
+{% endif %}
+
+{% endfor %}
+{% endif %}
+{% endblock %}
